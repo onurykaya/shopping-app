@@ -6,28 +6,35 @@ export default class CategoryList extends Component {
     categories: []
   };
 
-  componentDidMount(){
+  componentDidMount() {
     this.getCategories();
   }
 
-   getCategories = () => {
-    fetch("http://localhost:3000/categories")
+  getCategories = () => {
+    let url = "http://localhost:3000/categories";
+    fetch(url)
       .then(response => response.json())
       .then(data => this.setState({ categories: data }));
-  }
+  };
 
   render() {
     return (
       <div>
         <h2> {this.props.info.title} </h2>
         <ListGroup>
-          {
-              this.state.categories.map((category)=>{
-                  return <ListGroupItem onClick={()=> this.props.changeCategory(category)}  key={category.id}> {category.categoryName} </ListGroupItem>
-              })
-          }
+          {this.state.categories.map(category => {
+            return (
+              <ListGroupItem
+                onClick={() => this.props.changeCategory(category)}
+                key={category.id}
+                active={category.categoryName === this.props.currentCategory? true : false}
+                style={{cursor:"pointer"}}
+              >
+                {category.categoryName}
+              </ListGroupItem>
+            );
+          })}
         </ListGroup>
-        <h3> {this.props.currentCategory} </h3>
       </div>
     );
   }
